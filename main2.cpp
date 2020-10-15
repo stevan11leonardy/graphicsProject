@@ -19,13 +19,13 @@ void initYAxisLegend() {
 
 void initXAxisLegend() {
 	// show x axis legend
-	int j = 13;
-	for (int i = 0; i <= 1100; i += 1100 / 11) {
+	int j = 0;
+	for (int i = 0; i < 12; i += 1) {
 		char str[3]; 
-		j--;
+		j++;
 		
-		outtextxy(1218 - i - 45, 580, "Bulan-");
-		outtextxy(1218 - i, 580, itoa(j, str, 10));
+		outtextxy(51 * (i + 1) + (i * 45) + 45 / 2, 565, "Bulan-");
+		outtextxy(51 * (i + 1) + (i * 45) + 45 / 2 + 45, 565, itoa(j, str, 10));
 	}
 }
 
@@ -43,42 +43,47 @@ void createBar(int x, int y) {
 	int xBar = x + barWidth;
 	int yBar = 550 - y;
 	
+	int thickness = 15;
 
 	setcolor(LIGHTBLUE);
-	
-	int thickness = 15;
 	
 	for (int i = thickness; i >= 0; i--) {
 		rectangle(xBar + i, yBar - i, xBar + 45 + i, 549 - i);
 		floodfill(xBar + i + 1, yBar + i + 1, LIGHTBLUE);
-		
 	}
 	
 	setcolor(BLUE);
 	rectangle(xBar, yBar, xBar + 45, 549);
 	
 	setfillstyle(SOLID_FILL, BLUE);
-	floodfill(xBar + 1, yBar + 1, BLUE);
+	floodfill(xBar + 1, yBar + 1, BLUE);	
 	
-//	line(xBar, yBar, xBar + thickness, yBar - thickness);
-//	line(xBar + 45, yBar, xBar + 45 + thickness, yBar - thickness);
-//	line(xBar + 45, 549, xBar + 45 + thickness, 549 - thickness);
-	
-//	rectangle(xBar + thickness, yBar - thickness, xBar + 45 + thickness, 549 - thickness);
+	setcolor(WHITE);
+	char str[3];
+	outtextxy(xBar + 45 / 2, yBar - 35, itoa(y, str, 10));	
 }
 
 void initChart() {
 	int xInit = 51;
 	int yInit = 550;
 	
-	createBar(xInit, 175);
-}
-
-main() {
+	int data[12];
+	
+	for (int i = 0; i < sizeof(data) / sizeof(data[0]); i++) {
+		cout<< "Jumlah penjualan bulan ke-" << i + 1 << " = ";
+		cin >> data[i];
+	}
+	
 	initwindow(WINDOW_W, WINDOW_H);
 	
 	initContainer();
-	
+		
+	for (int i = 0; i < sizeof(data) / sizeof(data[0]); i++) {
+		createBar(xInit * (i + 1) + (i * 45), data[i]);
+	}
+}
+
+main() {
 	initChart();
 	
 	getch();
